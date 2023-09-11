@@ -1,0 +1,31 @@
+## Recuperar la información del pokemon ditto 
+GET http://localhost:1234/pokemon/ditto
+
+### Petición para crear un pokemon
+POST http://localhost:1234/pokemon
+Content-Type: application/json
+
+{
+  "name": "ditto",
+  "type": "normal",
+  "moves": [
+    "transform"
+  ]
+}
+
+
+### Requesta POST with express
+
+POST http://localhost:1122/pokemon
+Content-Type: application/json
+
+{
+  "name": "ditto",
+  "type": "normal",
+  "moves": [
+    "transform"
+  ]
+}
+
+### Recuperar la información del pokemon ditto 
+GET http://localhost:1122/pokemon/ditto
