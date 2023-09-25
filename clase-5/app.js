@@ -1,21 +1,24 @@
 import express, { json as _json } from 'express'
-import { moviesRouter } from './routes/movies.js'
+import { createMovieRouter } from './routes/movies.js'
 import { corsMiddelware } from './middlewares/cors.js'
+import 'dotenv/config'
 
+export const createApp = ({ movieModel }) => {
+  const app = express()
+  app.disable('x-powered-by')
+  app.use(_json())
+  app.use(corsMiddelware())
 
-const app = express()
-app.disable('x-powered-by')
-app.use(_json())
-app.use(corsMiddelware())
+  app.use('/movies', createMovieRouter({ movieModel }))
 
-app.use('/movies', moviesRouter)
+  // Los recursos que sean MOVIES se indentifica con /movies
 
-// Los recursos que sean MOVIES se indentifica con /movies
+  const PORT = process.env.PORT ?? 1234
+  app.listen(PORT, () => {
+    console.log(`Server listening on port: ${PORT}`)
+  })
+}
 
-const PORT = process.env.PORT ?? 1234
-app.listen(PORT, () => {
-  console.log(`Server listening on port: ${PORT}`)
-})
 
 /* 
 IDEMPOTENCIA: 

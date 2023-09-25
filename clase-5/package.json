@@ -1,19 +1,23 @@
 {
-  "name": "clase-3",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "type": "module",
-  "scripts": {
-    "dev": "node --watch ./app.js"
-  },
-  "keywords": [],
   "author": "",
-  "license": "ISC",
   "dependencies": {
     "cors": "2.8.5",
+    "dotenv": "16.3.1",
     "express": "4.18.2",
     "mongodb": "6.1.0",
+    "mysql2": "3.6.1",
     "zod": "3.22.2"
-  }
+  },
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "main": "app.js",
+  "name": "clase-3",
+  "scripts": {
+    "dev": "node --watch ./app.js",
+    "start:local": "node --watch server-with-local.js",
+    "start:mysql": "node --watch server-with-mysql.js"
+  },
+  "type": "module",
+  "version": "1.0.0"
 }

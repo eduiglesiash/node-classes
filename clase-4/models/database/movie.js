@@ -1,51 +1,77 @@
-import { randomUUID } from 'node:crypto'
-import { readJSON } from '../../utils/readJson.js'
-const movies = readJSON('../movies.json')
+import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb'
+const uri = 'mongodb+srv://user:???@cluster0.dhwmu.mongodb.net/?retryWrites=true&w=majority'
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true
+  }
+})
+
+async function connect () {
+  try {
+    await client.connect()
+    const database = client.db('database')
+    return database.collection('movies')
+  } catch (error) {
+    console.error('Error connecting to the database')
+    console.error(error)
+    await client.close()
+  }
+}
 
 export class MovieModel {
-  static async getAll({ genre }) {
+  static async getAll ({ genre }) {
+    const db = await connect()
+
     if (genre) {
-      return movies.filter((movie) => movie.genre.some((gen) => gen.toLowerCase() === genre.toLocaleLowerCase()))
+      return db.find({
+        genre: {
+          $elemMatch: {
+            $regex: genre,
+            $options: 'i'
+          }
+        }
+      }).toArray()
     }
-    // Salida sin filtra
-    return movies
+
+    return db.find({}).toArray()
   }
 
-  static async getById({ id }) {
-    const movie = movies.find((movie) => movie.id === id)
-    return movie
+  static async getById ({ id }) {
+    const db = await connect()
+    const objectId = new ObjectId(id)
+    return db.findOne({ _id: objectId })
   }
 
-  static async create({ input }) {
-    const newMovie = {
-      id: randomUUID(),
+  static async create ({ input }) {
+    const db = await connect()
+
+    const { insertedId } = await db.insertOne(input)
+
+    return {
+      id: insertedId,
       ...input
     }
-
-    movies.push(newMovie)
-
-    return newMovie
   }
 
-  static async delete({ id }) {
-    const movieIndex = movies.findIndex((movie) => movie.id === id)
-    if (movieIndex === -1) return false
-    movies.splice(movieIndex, 1)
-    return true
+  static async delete ({ id }) {
+    const db = await connect()
+    const objectId = new ObjectId(id)
+    const { deletedCount } = await db.deleteOne({ _id: objectId })
+    return deletedCount > 0
   }
 
-  static async update({ id, input }) {
-    const movieIndex = movies.findIndex((movie) => movie.id === id)
+  static async update ({ id, input }) {
+    const db = await connect()
+    const objectId = new ObjectId(id)
 
-    if (movieIndex === -1) {
-      return res.status(404).json({ message: 'Movie Not Found' })
-    }
+    const { ok, value } = await db.findOneAndUpdate({ _id: objectId }, { $set: input }, { returnNewDocument: true })
 
-    const updateMovie = {
-      ...movies[movieIndex],
-      ...input
-    }
+    if (!ok) return false
 
-    return movies[movieIndex]
+    return value
   }
 }

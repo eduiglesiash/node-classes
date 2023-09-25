@@ -3,7 +3,7 @@ GET http://localhost:1234/movies
 
 
 ### Recuperar una pelicula por ID
-GET http://localhost:1234/movies/5ad1a235-0d9c-410a-b32b-220d91689a08
+GET http://localhost:1234/movies/376471f9-5bbd-11ee-9ec5-aa97ae857c94
 
 ### Recuperar una pelicula por género
 GET http://localhost:1234/movies?genre=Action
@@ -33,7 +33,7 @@ Content-Type: application/json
 }
 
 ### Actualizar una pelicula. Solo una parte de la película
-PATCH http://localhost:1234/movies/5ad1a235-0d9c-410a-b32b-220d91689a08
+PATCH http://localhost:1234/movies/376471f9-5bbd-11ee-9ec5-aa97ae857c94
 Content-Type: application/json
 
 {

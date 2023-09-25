@@ -50,4 +50,4 @@ INSERT INTO movie_genres (movie_id, genre_id) VALUES
 ((SELECT id FROM movies WHERE title = 'Inception'), (SELECT id FROM genres WHERE name = 'Sci-Fi')),
 ((SELECT id FROM movies WHERE title = 'Pulp Fiction'), (SELECT id FROM genres WHERE name = 'Crime'));
 
-SELECT *, BIN_TO_UUID(id) FROM movies; 
+SELECT title, year, director, duration, poster, rate, BIN_TO_UUID(id) id FROM movies; 
