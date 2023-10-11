@@ -1,4 +1,4 @@
-import express, { json as _json } from 'express'
+import express, { json } from 'express'
 import { createMovieRouter } from './routes/movies.js'
 import { corsMiddelware } from './middlewares/cors.js'
 import 'dotenv/config'
@@ -6,7 +6,7 @@ import 'dotenv/config'
 export const createApp = ({ movieModel }) => {
   const app = express()
   app.disable('x-powered-by')
-  app.use(_json())
+  app.use(json())
   app.use(corsMiddelware())
 
   app.use('/movies', createMovieRouter({ movieModel }))
@@ -27,5 +27,4 @@ Propiedad de realizar una acción determinada varias veces y aún así consguier
 POST => Crear un nuevo elemento en el servidor
 PUT => Actualizar totalmente un elemento ya exsistente o crearlo si no existe 
 PATCH => Actualizar parcialmente un elemento/recurso
-
 */
